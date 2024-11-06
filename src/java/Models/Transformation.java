@@ -316,5 +316,29 @@ public class Transformation {
         }
         return res;
     }
+    
+    public static List<Transformation> getAll(Connect c) throws Exception { 
+        try {
+            String sql = "select * from Transformation";
+            PreparedStatement preparedStatement = c.getConnex().prepareStatement(sql);
+            ResultSet rs = preparedStatement.executeQuery();
+            
+            List<Transformation> results = new ArrayList<Transformation>();
+            while(rs.next()){
+                int id = rs.getInt(1);
+                int idbloc = rs.getInt(2);
+                Date dateT = rs.getDate(3);
+                Transformation tr = new Transformation(id, idbloc, dateT, c);
+                results.add(tr);
+            }
+            preparedStatement.close();
+            rs.close();
+            return results;
+            
+        } catch (Exception e) {
+            c.closeBD();
+            throw e;
+        }
+    }
    
 }
