@@ -70,7 +70,7 @@ public class TransformationServlet extends HttpServlet {
             c.connectToPostgres("kidoro", "Etu002610");
             // Récupérer les données avec getAll() de Usuelle et Bloc
             List<Usuelle> listUsuelle = Usuelle.getAll(c);
-            List<Bloc> listBloc = Bloc.getAll(c);
+            List<Bloc> listBloc = Bloc.getAllDispo(c);
             
             // Ajouter les listes en tant qu'attributs de requête
             request.setAttribute("listUsuelle", listUsuelle);
