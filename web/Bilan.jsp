@@ -91,7 +91,13 @@
         <a href="index.jsp">Insertion bloc</a>
     </div>
 <h2>Bilan des Transformations</h2>
-
+<%
+                List<Usuelle> prUsuelle = (List<Usuelle>) request.getAttribute("prUsuelle");
+                if (prUsuelle != null) {
+                    for (Usuelle usuelle : prUsuelle) {
+                      out.println("U"+usuelle.getId()+"="+usuelle.getPrixVente());  
+                }}
+            %>
 <table>
     <thead>
         <tr>

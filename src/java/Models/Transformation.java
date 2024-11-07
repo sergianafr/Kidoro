@@ -23,7 +23,7 @@ public class Transformation {
     protected List<DetailsTransformation> detailsTransformation;
     protected Bloc bloc;
     protected Bloc reste;
-    private final static double THETA = 0.02;
+    private final static double THETA = 0.3;
 
     public Transformation(int id, int idBloc, Date dateTransformation, List<DetailsTransformation> detailsTransformation) {
         this.id = id;
@@ -149,10 +149,11 @@ public class Transformation {
     
     public void insertTransformationWDetails(Connect c)throws Exception{
         try{
-            controler(THETA*this.bloc.calculateVolume());
+            controler(0.3*this.bloc.calculateVolume());
             this.setId(this.generateTransformation(c));
             for(DetailsTransformation dt : detailsTransformation){
                 dt.setIdTransformation(this.id);
+                dt.setPrixRevient(dt.getUsuelle().calculateVolume()*dt.getNb()*this.getBloc().getPRUnite());
                 dt.createDetailsTransformation(c);
             }
             this.insertReste(c);  
@@ -174,8 +175,10 @@ public class Transformation {
                 int id = rs.getInt(1);
                 int idUsuelle = rs.getInt(2);
                 int nb = rs.getInt(3);
+                double pr = rs.getDouble(4);
                 
                 DetailsTransformation cueilleur = new DetailsTransformation(id, idUsuelle, nb, c);
+                cueilleur.setPrixRevient(pr);
                 results.add(cueilleur);
             }
             preparedStatement.close();
@@ -247,7 +250,7 @@ public class Transformation {
    public double getVolumeFabrique(){
         double pr = 0;
         for(DetailsTransformation dt : detailsTransformation){
-            pr += dt.getUsuelle().calculateVolume();
+            pr += dt.getUsuelle().calculateVolume()*dt.getNb();
         }
         return pr;
     }
@@ -260,15 +263,21 @@ public class Transformation {
     }
     
     public void checkPerte(double theta)throws Exception{
-        if(this.bloc.calculateVolume()-(getVolumeFabrique()+this.reste.calculateVolume())>theta){
+        System.out.println("BLOC SOURCE="+this.bloc.calculateVolume());
+        double jj= getVolumeFabrique()+this.reste.calculateVolume();
+        System.out.println("NIASAAAA"+jj);
+        if(this.bloc.calculateVolume()-(getVolumeFabrique()+this.reste.calculateVolume())>(0.3*this.bloc.calculateVolume())){
             throw new Exception("La perte a depassee le seuil autorise");
             
         }
     }
     public void controler(double theta)throws Exception{
         try{
+            if(this.bloc.calculateVolume()< this.reste.calculateVolume()){
+                throw new Exception("Le reste n'est pas valide");
+            }
             checkPerte(theta);
-            checkPR();
+            //checkPR();
         } catch(Exception e){
             throw e;
         }

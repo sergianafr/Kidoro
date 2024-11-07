@@ -178,6 +178,32 @@ public class Usuelle {
         return us;
     }
     
+    public static List<Usuelle> getPrixRevient(Connect c)throws Exception{
+        try {
+            String sql = "SELECT SUM(PRIXREVIENT)/SUM(NB) as PRGlobal, IDUSUELLE FROM DETAILSTRANSFORMATION GROUP BY IDUSUELLE";
+            PreparedStatement preparedStatement = c.getConnex().prepareStatement(sql);
+            ResultSet rs = preparedStatement.executeQuery();
+            
+            List<Usuelle> results = new ArrayList<Usuelle>();
+            while(rs.next()){
+                int id = rs.getInt(2);
+               
+               double prixVente = rs.getDouble(1);
+                
+                Usuelle us = new Usuelle();
+                us.setId(id);
+                us.setPrixVente(prixVente);
+                results.add(us);
+            }
+            preparedStatement.close();
+            rs.close();
+            return results;
+            
+        } catch (Exception e) {
+            c.closeBD();
+            throw e;
+        }
+    }
      public static Usuelle getMoinsPerte(Connect c)throws Exception{
         Usuelle us = new Usuelle();
         try{

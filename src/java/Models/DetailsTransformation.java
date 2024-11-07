@@ -15,10 +15,19 @@ import java.sql.PreparedStatement;
 public class DetailsTransformation {
     private int idTransformation, idUsuelle;
     private int nb;
+    private double prixRevient;
     protected Usuelle usuelle;
 
     public Usuelle getUsuelle() {
         return usuelle;
+    }
+
+    public double getPrixRevient() {
+        return prixRevient;
+    }
+
+    public void setPrixRevient(double prixRevient) {
+        this.prixRevient = prixRevient;
     }
 
     public DetailsTransformation(int idTransformation, int idUsuelle, int nb, Connect c) throws Exception{
@@ -63,12 +72,12 @@ public class DetailsTransformation {
     
     public void createDetailsTransformation(Connect c)throws Exception{
         try {      
-            String Query = "INSERT INTO detailstransformation VALUES (?, ?, ?)";
+            String Query = "INSERT INTO detailstransformation VALUES (?, ?, ?, ?)";
             PreparedStatement preparedStatement = c.getConnex().prepareStatement(Query);
             preparedStatement.setInt(1, this.getIdTransformation());
             preparedStatement.setInt(2 , this.getIdUsuelle());
             preparedStatement.setInt(3 , this.getNb());
-            
+            preparedStatement.setDouble(4 , this.getPrixRevient());
             preparedStatement.executeUpdate();
             preparedStatement.close();
             c.getConnex().commit();

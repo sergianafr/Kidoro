@@ -66,9 +66,10 @@ public class BilanServlet extends HttpServlet {
             c.connectToPostgres("kidoro", "Etu002610");
             List<Usuelle> listUsuelle = Usuelle.getAll(c);
             Vector<Bilan> listBilan = Bilan.getAllBilan(c);
+            List<Usuelle> prUsuelle = Usuelle.getPrixRevient(c);
             request.setAttribute("listUsuelle", listUsuelle);
             request.setAttribute("listBilan", listBilan);
-            
+            request.setAttribute("prUsuelle", prUsuelle);
             request.getRequestDispatcher("/Bilan.jsp").forward(request, response);
             
         }catch(Exception e){
