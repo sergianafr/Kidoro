@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <servlet>
+        <servlet-name>InsertBloc</servlet-name>
+        <servlet-class>Controller.InsertBloc</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>TransformationServlet</servlet-name>
+        <servlet-class>Controller.TransformationServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BilanServlet</servlet-name>
+        <servlet-class>Controller.BilanServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>InsertBloc</servlet-name>
+        <url-pattern>/InsertBloc</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TransformationServlet</servlet-name>
+        <url-pattern>/TransformationServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BilanServlet</servlet-name>
+        <url-pattern>/BilanServlet</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+</web-app>

@@ -95,6 +95,8 @@ public class Transformation {
         try{
             Bloc reste = new Bloc();
             reste.setSource(this.bloc.getId());
+            reste.getByIdSource(c);
+            this.reste = reste;
         }catch(Exception e){
             throw e;
         }
@@ -147,7 +149,7 @@ public class Transformation {
     
     public void insertTransformationWDetails(Connect c)throws Exception{
         try{
-            controler(THETA);
+            controler(THETA*this.bloc.calculateVolume());
             this.setId(this.generateTransformation(c));
             for(DetailsTransformation dt : detailsTransformation){
                 dt.setIdTransformation(this.id);
@@ -192,8 +194,11 @@ public class Transformation {
     
     public double getPRFabrique(){
         double pr = 0;
+        System.out.println("PR UNITE<<<< "+bloc.getPRUnite());
+
         for(DetailsTransformation dt : detailsTransformation){
-            pr += dt.getUsuelle().calculateVolume()*bloc.getPRUnite();
+            System.out.println("Volume usuelleee < " + dt.getUsuelle().calculateVolume() + " NOMBREEE >> " + dt.getNb());
+            pr += dt.getUsuelle().calculateVolume()*dt.getNb()*bloc.getPRUnite();
         }
         return pr;
     }
@@ -246,6 +251,8 @@ public class Transformation {
         return pr;
     }
     public void checkPR()throws Exception{
+        System.out.println("!!!!!!!!!!!!! source "+this.bloc.getPrixRevient());
+        System.out.println(this.getPRFabrique()+this.reste.getPrixRevient());
         if(this.getPRFabrique()+this.reste.getPrixRevient() != this.bloc.getPrixRevient()){
             throw new Exception("Le prix de revient insere n'est pas egal aux prix de revient attendu");
         }
@@ -299,6 +306,7 @@ public class Transformation {
         double res = 0;
         try{
             Usuelle rent = Usuelle.getMostRentable(c);
+            System.out.print("PV TSOTRA>>>>>>>>>>>>>>>"+getPVTsotra()+" qte RENTABLE>>"+this.getBloc().getQteTheorique(rent)+" PV "+rent.getPrixVente());
             res = getPVTsotra()+(this.getBloc().getQteTheorique(rent)*rent.getPrixVente());
         }catch(Exception e){
             throw e;
@@ -310,6 +318,7 @@ public class Transformation {
         double res = 0;
         try{
             Usuelle rent = Usuelle.getMoinsPerte(c);
+            System.out.print("PV TSOTRA>>>>>>>>>>>>>>>"+getPVTsotra()+" qte RENTABLE>>"+this.getBloc().getQteTheorique(rent)+" PV "+rent.getPrixVente());
             res = getPVTsotra()+(this.getBloc().getQteTheorique(rent)*rent.getPrixVente());
         }catch(Exception e){
             throw e;

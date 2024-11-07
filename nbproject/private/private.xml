@@ -4,8 +4,15 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/SERGIANA/Documents/NetBeansProjects/Kidoro/src/java/Models/Usuelle.java</file>
-            <file>file:/C:/Users/SERGIANA/Documents/NetBeansProjects/Kidoro/src/java/Models/DetailsTransformation.java</file>
+            <file>file:/C:/Users/SERGIANA/Documents/NetBeansProjects/Kidoro/src/java/Models/Bloc.java</file>
+            <file>file:/C:/Users/SERGIANA/Documents/NetBeansProjects/Kidoro/src/java/Controller/InsertBloc.java</file>
+            <file>file:/C:/Users/SERGIANA/Documents/NetBeansProjects/Kidoro/src/java/Controller/TransformationServlet.java</file>
+            <file>file:/C:/Users/SERGIANA/Documents/NetBeansProjects/Kidoro/web/transformation.jsp</file>
+            <file>file:/C:/Users/SERGIANA/Documents/NetBeansProjects/Kidoro/src/java/Models/Bilan.java</file>
+            <file>file:/C:/Users/SERGIANA/Documents/NetBeansProjects/Kidoro/src/java/Controller/BilanServlet.java</file>
+            <file>file:/C:/Users/SERGIANA/Documents/NetBeansProjects/Kidoro/web/Bilan.jsp</file>
             <file>file:/C:/Users/SERGIANA/Documents/NetBeansProjects/Kidoro/src/java/Models/Transformation.java</file>
+            <file>file:/C:/Users/SERGIANA/Documents/NetBeansProjects/Kidoro/web/index.jsp</file>
         </group>
     </open-files>
 </project-private>

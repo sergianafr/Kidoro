@@ -6,8 +6,11 @@
 package Models;
 
 import dbUtils.Connect;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -73,6 +76,16 @@ public class Usuelle {
     public void setPrixVente(double prixVente) {
         this.prixVente = prixVente;
     }
+
+    public Usuelle(int id, double longueur, double largeur, double epaisseur, double volume, double prixVente) {
+        this.id = id;
+        this.longueur = longueur;
+        this.largeur = largeur;
+        this.epaisseur = epaisseur;
+        this.volume = volume;
+        this.prixVente = prixVente;
+    }
+    
     public void getById(Connect c)throws Exception{
         try{
             String sql = "select * from Usuelle where id = ?";
@@ -99,6 +112,33 @@ public class Usuelle {
         return this.longueur*this.largeur*this.epaisseur;
     }
     
+    public static List<Usuelle> getAll(Connect c) throws Exception { 
+        try {
+            String sql = "select * from Usuelle";
+            PreparedStatement preparedStatement = c.getConnex().prepareStatement(sql);
+            ResultSet rs = preparedStatement.executeQuery();
+            
+            List<Usuelle> results = new ArrayList<Usuelle>();
+            while(rs.next()){
+                int id = rs.getInt(1);
+                double longueur = rs.getDouble(2);
+                double largeur = rs.getDouble(3);
+                double epaisseur = rs.getDouble(4);
+                double volume = rs.getDouble(5);
+                double prixVente = rs.getDouble(6);
+                
+                Usuelle us = new Usuelle(id, longueur, largeur, epaisseur, volume, prixVente);
+                results.add(us);
+            }
+            preparedStatement.close();
+            rs.close();
+            return results;
+            
+        } catch (Exception e) {
+            c.closeBD();
+            throw e;
+        }
+    }
     public static Usuelle getMostRentable(Connect c)throws Exception{
         Usuelle us = new Usuelle();
         try{

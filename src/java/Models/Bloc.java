@@ -9,6 +9,8 @@ import dbUtils.Connect;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -181,7 +183,36 @@ public class Bloc {
     }
 }
 
-    
+    public static List<Bloc> getAll(Connect c) throws Exception { 
+        try {
+            String sql = "select * from Bloc";
+            PreparedStatement preparedStatement = c.getConnex().prepareStatement(sql);
+            ResultSet rs = preparedStatement.executeQuery();
+            
+            List<Bloc> results = new ArrayList<Bloc>();
+            while(rs.next()){
+                int id = rs.getInt(1);
+                double longueur = rs.getDouble(2);
+                double largeur = rs.getDouble(3);
+                double epaisseur = rs.getDouble(4);
+                double volume = rs.getDouble(5);
+                double prixRevient = rs.getDouble(6);
+                double prixAchat = rs.getDouble(7);
+                Date dateProduction = rs.getDate(8);
+                int source = rs.getInt(9);
+                
+                Bloc b = new Bloc(id, longueur, largeur, epaisseur, volume, prixRevient, prixAchat,dateProduction, source);
+                results.add(b);
+            }
+            preparedStatement.close();
+            rs.close();
+            return results;
+            
+        } catch (Exception e) {
+            c.closeBD();
+            throw e;
+        }
+    }
     public int getQteTheorique(Usuelle u){
         return (int)(this.calculateVolume()/u.calculateVolume());
     }

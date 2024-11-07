@@ -64,11 +64,12 @@ public class Bilan {
     }
     
     
-    public Vector<Bilan> getAllBilan(Connect c)throws Exception{
+    public static Vector<Bilan> getAllBilan(Connect c)throws Exception{
         try{
             List<Transformation> list = Transformation.getAll(c);
             Vector<Bilan> listBilan = new Vector<Bilan>();
             for(Transformation tr : list){
+                System.out.println("hhhhhhhhhh");
                 Bilan b = new Bilan(tr, c);
                 listBilan.add(b);
             }
@@ -77,6 +78,7 @@ public class Bilan {
             throw e;
         }
     }
+    
     
     
 }
