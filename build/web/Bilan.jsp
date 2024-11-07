@@ -67,10 +67,29 @@
         tr:hover {
             background-color: #e1f5fe;
         }
+        .nav-links {
+            margin-bottom: 20px;
+        }
+
+        .nav-links a {
+            margin-right: 10px;
+            text-decoration: none;
+            color: #007BFF;
+            font-weight: bold;
+        }
+
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+
     </style>
 </head>
 <body>
 
+    <div class="nav-links">
+        <a href="TransformationServlet">Transformation</a>
+        <a href="index.jsp">Insertion bloc</a>
+    </div>
 <h2>Bilan des Transformations</h2>
 
 <table>
@@ -86,13 +105,13 @@
                 if (listUsuelle != null) {
                     for (Usuelle usuelle : listUsuelle) {
             %>
-                <th><%= "U" + usuelle.getId() %></th>
+                <th><%= "U" + usuelle.getId() + "-" + usuelle.getNom() %></th>
             <%
                     }
                 }
             %>
 
-            <th>Prix Vente Tsotra</th>
+            <th>Prix Vente Reel</th>
             <th>Prix Vente Plus Rentable</th>
             <th>Prix Vente Moindre Perte</th>
         </tr>

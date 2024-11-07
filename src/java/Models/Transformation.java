@@ -197,9 +197,10 @@ public class Transformation {
         System.out.println("PR UNITE<<<< "+bloc.getPRUnite());
 
         for(DetailsTransformation dt : detailsTransformation){
-            System.out.println("Volume usuelleee < " + dt.getUsuelle().calculateVolume() + " NOMBREEE >> " + dt.getNb());
+           // System.out.println("Volume usuelleee < " + dt.getUsuelle().calculateVolume() + " NOMBREEE >> " + dt.getNb());
             pr += dt.getUsuelle().calculateVolume()*dt.getNb()*bloc.getPRUnite();
         }
+        System.out.println("PR FABRIQUE >> "+pr);
         return pr;
     }
     public void setBloc(Connect c) throws Exception { 
@@ -251,7 +252,7 @@ public class Transformation {
         return pr;
     }
     public void checkPR()throws Exception{
-        System.out.println("!!!!!!!!!!!!! source "+this.bloc.getPrixRevient());
+        System.out.println("!!!!!!!!!!!!! PR reste "+this.reste.getPrixRevient());
         System.out.println(this.getPRFabrique()+this.reste.getPrixRevient());
         if(this.getPRFabrique()+this.reste.getPrixRevient() != this.bloc.getPrixRevient()){
             throw new Exception("Le prix de revient insere n'est pas egal aux prix de revient attendu");
@@ -261,12 +262,13 @@ public class Transformation {
     public void checkPerte(double theta)throws Exception{
         if(this.bloc.calculateVolume()-(getVolumeFabrique()+this.reste.calculateVolume())>theta){
             throw new Exception("La perte a depassee le seuil autorise");
+            
         }
     }
     public void controler(double theta)throws Exception{
         try{
-            checkPR();
             checkPerte(theta);
+            checkPR();
         } catch(Exception e){
             throw e;
         }

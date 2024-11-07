@@ -18,11 +18,20 @@ import java.util.List;
  */
 public class Usuelle {
     private int id;
+    private String nom;
     private double longueur, largeur, epaisseur, volume;
     private double prixVente;
 
     public Usuelle(int id) {
         this.id = id;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
     }
 
     public double getVolume() {
@@ -77,8 +86,9 @@ public class Usuelle {
         this.prixVente = prixVente;
     }
 
-    public Usuelle(int id, double longueur, double largeur, double epaisseur, double volume, double prixVente) {
+    public Usuelle(int id, String nom, double longueur, double largeur, double epaisseur, double volume, double prixVente) {
         this.id = id;
+        this.nom = nom;
         this.longueur = longueur;
         this.largeur = largeur;
         this.epaisseur = epaisseur;
@@ -94,11 +104,12 @@ public class Usuelle {
             ResultSet rs = preparedStatement.executeQuery();
 
             while(rs.next()){
-               this.longueur = rs.getDouble(2);
-               this.largeur = rs.getDouble(3);
-               this.epaisseur = rs.getDouble(4);
-               this.volume = rs.getDouble(5);
-               this.prixVente = rs.getDouble(6);
+                this.nom = rs.getString(2);
+               this.longueur = rs.getDouble(3);
+               this.largeur = rs.getDouble(4);
+               this.epaisseur = rs.getDouble(5);
+               this.volume = rs.getDouble(6);
+               this.prixVente = rs.getDouble(7);
             }
             preparedStatement.close();
             rs.close();
@@ -121,13 +132,14 @@ public class Usuelle {
             List<Usuelle> results = new ArrayList<Usuelle>();
             while(rs.next()){
                 int id = rs.getInt(1);
-                double longueur = rs.getDouble(2);
-                double largeur = rs.getDouble(3);
-                double epaisseur = rs.getDouble(4);
-                double volume = rs.getDouble(5);
-                double prixVente = rs.getDouble(6);
+                String nom = rs.getString(2);
+               double longueur = rs.getDouble(3);
+               double largeur = rs.getDouble(4);
+               double epaisseur = rs.getDouble(5);
+               double volume = rs.getDouble(6);
+               double prixVente = rs.getDouble(7);
                 
-                Usuelle us = new Usuelle(id, longueur, largeur, epaisseur, volume, prixVente);
+                Usuelle us = new Usuelle(id, nom, longueur, largeur, epaisseur, volume, prixVente);
                 results.add(us);
             }
             preparedStatement.close();
@@ -149,11 +161,13 @@ public class Usuelle {
             ResultSet rs = preparedStatement.executeQuery();
 
             while(rs.next()){
-               us.longueur = rs.getDouble(2);
-               us.largeur = rs.getDouble(3);
-               us.epaisseur = rs.getDouble(4);
-               us.volume = rs.getDouble(5);
-               us.prixVente = rs.getDouble(6);
+               us.id = rs.getInt(1);
+               us.nom = rs.getString(2);
+               us.longueur = rs.getDouble(3);
+               us.largeur = rs.getDouble(4);
+               us.epaisseur = rs.getDouble(5);
+               us.volume = rs.getDouble(6);
+               us.prixVente = rs.getDouble(7);
             }
             preparedStatement.close();
             rs.close();
@@ -174,11 +188,13 @@ public class Usuelle {
             ResultSet rs = preparedStatement.executeQuery();
 
             while(rs.next()){
-               us.longueur = rs.getDouble(2);
-               us.largeur = rs.getDouble(3);
-               us.epaisseur = rs.getDouble(4);
-               us.volume = rs.getDouble(5);
-               us.prixVente = rs.getDouble(6);
+               us.id = rs.getInt(1);
+               us.nom = rs.getString(2);
+               us.longueur = rs.getDouble(3);
+               us.largeur = rs.getDouble(4);
+               us.epaisseur = rs.getDouble(5);
+               us.volume = rs.getDouble(6);
+               us.prixVente = rs.getDouble(7);
             }
             preparedStatement.close();
             rs.close();

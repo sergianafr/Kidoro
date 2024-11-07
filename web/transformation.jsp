@@ -67,6 +67,20 @@
             padding-top: 10px;
             border-top: 1px solid #ddd;
         }
+        .nav-links {
+            margin-bottom: 20px;
+        }
+
+        .nav-links a {
+            margin-right: 10px;
+            text-decoration: none;
+            color: #007BFF;
+            font-weight: bold;
+        }
+
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
 
         .usuelle-section label {
             font-size: 0.9em;
@@ -86,6 +100,10 @@
 </head>
 <body>
 
+    <div class="nav-links">
+        <a href="index.jsp">Insertion bloc</a>
+        <a href="BilanServlet">Bilan</a>
+    </div>
 <h2>Transformation de bloc</h2>
 
 <form action="TransformationServlet" method="post">
