@@ -308,7 +308,7 @@ public class Transformation {
     public double getPVTsotra(){
         double pv = 0;
         for(DetailsTransformation dt : detailsTransformation){
-            pv += dt.getUsuelle().getPrixVente();
+            pv += dt.getUsuelle().getPrixVente()*dt.getNb();
         }
         return pv;
     }
@@ -317,8 +317,10 @@ public class Transformation {
         double res = 0;
         try{
             Usuelle rent = Usuelle.getMostRentable(c);
-            System.out.print("PV TSOTRA>>>>>>>>>>>>>>>"+getPVTsotra()+" qte RENTABLE>>"+this.getBloc().getQteTheorique(rent)+" PV "+rent.getPrixVente());
-            res = getPVTsotra()+(this.getBloc().getQteTheorique(rent)*rent.getPrixVente());
+            System.out.println("MOST RENTABLE>>>>>>"+rent.getNom());
+            System.out.println("\n Qte theorique>>>>>>"+rent.getNom());
+           // System.out.print("PV TSOTRA>>>>>>>>>>>>>>>"+getPVTsotra()+" qte RENTABLE>>"+this.getBloc().getQteTheorique(rent)+" PV "+rent.getPrixVente());
+            res = getPVTsotra()+(this.reste.getQteTheorique(rent)*rent.getPrixVente());
         }catch(Exception e){
             throw e;
         }
@@ -328,9 +330,11 @@ public class Transformation {
     public double getPVMoinsPerte(Connect c)throws Exception{
         double res = 0;
         try{
+            
             Usuelle rent = Usuelle.getMoinsPerte(c);
-            System.out.print("PV TSOTRA>>>>>>>>>>>>>>>"+getPVTsotra()+" qte RENTABLE>>"+this.getBloc().getQteTheorique(rent)+" PV "+rent.getPrixVente());
-            res = getPVTsotra()+(this.getBloc().getQteTheorique(rent)*rent.getPrixVente());
+            System.out.println("MOST Perte>>>>>>"+rent.getNom());
+            //System.out.print("PV TSOTRA>>>>>>>>>>>>>>>"+getPVTsotra()+" qte RENTABLE>>"+this.getBloc().getQteTheorique(rent)+" PV "+rent.getPrixVente());
+            res = getPVTsotra()+(this.reste.getQteTheorique(rent)*rent.getPrixVente());
         }catch(Exception e){
             throw e;
         }

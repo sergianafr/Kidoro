@@ -245,6 +245,7 @@ public class Bloc {
         }
     }
     public int getQteTheorique(Usuelle u){
+        
         return (int)(this.calculateVolume()/u.calculateVolume());
     }
     
