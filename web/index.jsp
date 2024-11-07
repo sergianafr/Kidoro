@@ -115,6 +115,8 @@
         <button type="submit">Enregistrer</button>
     </form>
 
+    
+
     <% String successMessage = (String) request.getAttribute("success");
        if (successMessage != null) { %>
        <p class="success-message"><%= successMessage %></p>

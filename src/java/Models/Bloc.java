@@ -22,6 +22,17 @@ public class Bloc {
     private double prixRevient, prixAchat;
     private Date dateProduction;
     private int source;
+    private int sourceMere;
+
+    public int getSourceMere() {
+        return sourceMere;
+    }
+
+    public void setSourceMere(int sourceMere) {
+        this.sourceMere = sourceMere;
+    }
+    
+    
 
     public Bloc(int id, double longueur, double largeur, double epaisseur, double prixRevient, double prixAchat, Date dateProduction, int source) {
         this.id = id;
@@ -174,6 +185,7 @@ public class Bloc {
             this.prixAchat = rs.getDouble("prixAchat");
             this.dateProduction = rs.getDate("dateProduction");
             this.source = rs.getInt("source");
+            this.sourceMere = rs.getInt("sourceMere");
         }
 
         preparedStatement.close();
@@ -214,6 +226,21 @@ public class Bloc {
         }
     }
 
+    
+    public static void update(int id, double pr, Connect c)throws Exception{
+        try {      
+            String Query = "UPDATE Bloc SET prixRevient=? WHERE id=?";
+            PreparedStatement preparedStatement = c.getConnex().prepareStatement(Query);
+            preparedStatement.setDouble(1 , pr);
+            preparedStatement.setInt(2, id);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+            c.getConnex().commit();
+        } catch (Exception e) {
+            c.closeBD();
+            throw e;
+        }
+    }
     public static List<Bloc> getAllDispo(Connect c) throws Exception { 
         try {
             String sql = "select * from Bloc where id not in (select source from bloc)";

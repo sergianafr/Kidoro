@@ -91,11 +91,12 @@
         <a href="index.jsp">Insertion bloc</a>
     </div>
 <h2>Bilan des Transformations</h2>
+<h3>Prix de revient pour chaque usuelle</h3>
 <%
                 List<Usuelle> prUsuelle = (List<Usuelle>) request.getAttribute("prUsuelle");
                 if (prUsuelle != null) {
                     for (Usuelle usuelle : prUsuelle) {
-                      out.println("U"+usuelle.getId()+"="+usuelle.getPrixVente());  
+                      out.println("U"+usuelle.getId()+"="+df.format(usuelle.getPrixVente())+"<br>");  
                 }}
             %>
 <table>
@@ -120,6 +121,7 @@
             <th>Prix Vente Reel</th>
             <th>Prix Vente Plus Rentable</th>
             <th>Prix Vente Moindre Perte</th>
+            <th>Source Mere</th>
         </tr>
     </thead>
     <tbody>
@@ -139,6 +141,7 @@
             <td><%= df.format(bilan.getPvTsotra()) %></td>
             <td><%= df.format(bilan.getPvRentable()) %></td>
             <td><%= df.format(bilan.getPvMoinsPerte()) %></td>
+            <td><%= bilan.getTransformation().getBloc().getSourceMere() %></td>
         </tr>
         <%
                 }

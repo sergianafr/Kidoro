@@ -110,7 +110,7 @@
     <label for="dateProduction">Date de transformation :</label>
     <input type="date" id="dateProduction" name="dateProduction" required>
 
-    <label for="blocSelect">Sélectionnez un Bloc :</label>
+    <label for="blocSelect">Sï¿½lectionnez un Bloc :</label>
     <select id="blocSelect" name="blocId">
         <% List<Bloc> listBloc = (List<Bloc>) request.getAttribute("listBloc");
            if (listBloc != null) {
@@ -124,7 +124,7 @@
     </select>
 
     <div class="usuelle-section">
-        <p>Entrez la quantité obtenue pour chaque forme usuelle</p>
+        <p>Entrez la quantitï¿½ obtenue pour chaque forme usuelle</p>
         <% List<Usuelle> listUsuelle = (List<Usuelle>) request.getAttribute("listUsuelle");
            if (listUsuelle != null) {
                for (Usuelle usuelle : listUsuelle) {
@@ -145,11 +145,11 @@
         <label for="larg">Largeur :</label>
         <input type="number" id="larg" name="larg" step="0.0001">
 
-        <label for="epais">Épaisseur :</label>
+        <label for="epais">ï¿½paisseur :</label>
         <input type="number" id="epais" name="epais" step="0.0001">
     </div>
     
-    <button type="submit">Créer</button>
+    <button type="submit">Crï¿½er</button>
     <% String error = (String) request.getAttribute("exception");
        if (error != null) { %>
        <p class="error-message"><%= error %></p>
@@ -160,6 +160,22 @@
        <p class="success-message"><%= successMessage %></p>
     <% } %>
 </form>
-
+    <h2>Modifier Prix Revient</h2>
+    <form action="Modifier" method="post">
+        <label for="bloc">Selectionnez un Bloc :</label>
+        <select id="bloc" name="bloc">
+            <% List<Bloc> listB = (List<Bloc>) request.getAttribute("listBloc");
+            if (listB != null) {
+                for (Bloc bloc : listB) {
+                    String displayText = bloc.getId() + " - " + bloc.getLongueur() + "*" + bloc.getLargeur() + "*" + bloc.getEpaisseur();
+            %>
+                <option value="<%= bloc.getId() %>"><%= displayText %></option>
+            <%     }
+            }
+            %>
+        </select>
+        <label for="pr">Nouveau prix de revient:</label>
+        <input type="number" id="pr" name="pr" step="0.0001">
+    </form>
 </body>
 </html>

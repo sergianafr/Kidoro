@@ -225,9 +225,10 @@ public class Transformation {
                 Date dateProduction = rs.getDate(8);
                 int source = rs.getInt(9);
                 
-                int nb = rs.getInt(3);
+                //int nb = rs.getInt(3);
                 
                 bloc = new Bloc(id, longueur, largeur, epaisseur, volume, prixRevient, prixAchat, dateProduction, source);
+                bloc.setSourceMere(rs.getInt(10));
             }
             preparedStatement.close();
             rs.close();
