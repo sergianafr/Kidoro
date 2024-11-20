@@ -86,8 +86,8 @@ public class Transformation {
     public void setReste(double longueur, double largeur, double epaisseur){
         this.reste = new Bloc(longueur, largeur, epaisseur);
         reste.setDateProduction(this.getDateTransformation());
-        reste.setPrixRevient(bloc.getPRUnite()*reste.calculateVolume());
-        reste.setPrixAchat(bloc.getPAUnite()*reste.calculateVolume());
+        reste.setPrixRevientPratique(bloc.getPRUnite()*reste.getVolume());
+        // reste.setPrixAchat(bloc.getPAUnite()*reste.calculateVolume());
         reste.setSource(this.getBloc().getId());
     }
     
@@ -220,15 +220,17 @@ public class Transformation {
                 double largeur = rs.getDouble(3);
                 double epaisseur = rs.getDouble(4);
                 double volume = rs.getDouble(5);
-                double prixRevient = rs.getDouble(6);
-                double prixAchat = rs.getDouble(7);
+                double prixRevientTheorique = rs.getDouble(6);
+                double prixRevientPratique = rs.getDouble(7);
                 Date dateProduction = rs.getDate(8);
-                int source = rs.getInt(9);
+                int idMachine = rs.getInt(9);
+                int sourceMere =  rs.getInt(11);
+                int source = rs.getInt(10);
                 
                 //int nb = rs.getInt(3);
                 
-                bloc = new Bloc(id, longueur, largeur, epaisseur, volume, prixRevient, prixAchat, dateProduction, source);
-                bloc.setSourceMere(rs.getInt(10));
+                bloc = new Bloc(id, longueur, largeur, epaisseur, volume, prixRevientTheorique, prixRevientPratique, dateProduction, idMachine,source);
+                bloc.setSourceMere(sourceMere);
             }
             preparedStatement.close();
             rs.close();
@@ -256,9 +258,7 @@ public class Transformation {
         return pr;
     }
     public void checkPR()throws Exception{
-        System.out.println("!!!!!!!!!!!!! PR reste "+this.reste.getPrixRevient());
-        System.out.println(this.getPRFabrique()+this.reste.getPrixRevient());
-        if(this.getPRFabrique()+this.reste.getPrixRevient() != this.bloc.getPrixRevient()){
+        if(this.getPRFabrique()+this.reste.getPrixRevientPratique() != this.bloc.getPrixRevientPratique()){
             throw new Exception("Le prix de revient insere n'est pas egal aux prix de revient attendu");
         }
     }

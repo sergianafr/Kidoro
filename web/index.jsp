@@ -100,7 +100,7 @@
         <label for="largeur">Largeur :</label>
         <input type="number" step="0.0001" id="largeur" name="largeur" required>
 
-        <label for="epaisseur">Épaisseur :</label>
+        <label for="epaisseur">Epaisseur :</label>
         <input type="number" step="0.0001" id="epaisseur" name="epaisseur" required>
 
         <label for="prixRevient">Prix de revient :</label>

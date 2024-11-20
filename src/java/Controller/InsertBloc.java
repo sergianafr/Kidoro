@@ -38,16 +38,16 @@ public class InsertBloc extends HttpServlet {
         double largeur = Double.parseDouble(request.getParameter("largeur"));
         double epaisseur = Double.parseDouble(request.getParameter("epaisseur"));
         double volume = longueur * largeur * epaisseur;
-        double prixRevient = Double.parseDouble(request.getParameter("prixRevient"));
-        double prixAchat = Double.parseDouble(request.getParameter("prixAchat"));
+        double prixRevientPratique = Double.parseDouble(request.getParameter("prixRevient"));
         Date dateProduction = Date.valueOf(request.getParameter("dateProduction"));
         int source = request.getParameter("source") != null ? Integer.parseInt(request.getParameter("source")) : 0;
+        int idMachine = request.getParameter("idMachine") != null ? Integer.parseInt(request.getParameter("idMachine")) : 0;
 
         // Préparation de la connexion et de la requête SQL
         Connect c = new Connect(); // Initialisez votre objet Connect
         try{
             c.connectToPostgres("kidoro", "Etu002610");
-            Bloc b = new Bloc(0, longueur,largeur, epaisseur, prixRevient, prixAchat, dateProduction, 0);
+            Bloc b = new Bloc(0, longueur,largeur, epaisseur, prixRevientPratique, dateProduction, idMachine, source);
             b.createBloc(c);
             request.setAttribute("success", "Bloc insere avec succes");
            

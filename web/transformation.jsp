@@ -110,7 +110,7 @@
     <label for="dateProduction">Date de transformation :</label>
     <input type="date" id="dateProduction" name="dateProduction" required>
 
-    <label for="blocSelect">S�lectionnez un Bloc :</label>
+    <label for="blocSelect">Selectionnez un Bloc :</label>
     <select id="blocSelect" name="blocId">
         <% List<Bloc> listBloc = (List<Bloc>) request.getAttribute("listBloc");
            if (listBloc != null) {
@@ -124,7 +124,7 @@
     </select>
 
     <div class="usuelle-section">
-        <p>Entrez la quantit� obtenue pour chaque forme usuelle</p>
+        <p>Entrez la quantite obtenue pour chaque forme usuelle</p>
         <% List<Usuelle> listUsuelle = (List<Usuelle>) request.getAttribute("listUsuelle");
            if (listUsuelle != null) {
                for (Usuelle usuelle : listUsuelle) {
@@ -145,11 +145,11 @@
         <label for="larg">Largeur :</label>
         <input type="number" id="larg" name="larg" step="0.0001">
 
-        <label for="epais">�paisseur :</label>
+        <label for="epais">Epaisseur :</label>
         <input type="number" id="epais" name="epais" step="0.0001">
     </div>
     
-    <button type="submit">Cr�er</button>
+    <button type="submit">Creer</button>
     <% String error = (String) request.getAttribute("exception");
        if (error != null) { %>
        <p class="error-message"><%= error %></p>

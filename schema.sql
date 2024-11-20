@@ -56,7 +56,7 @@ CREATE TABLE DetailsFormule(
 
 CREATE MATERIALIZED VIEW V_EtatStock AS 
 SELECT 
-Achat.*, 
+Achat.id, Achat.idProduit, Achat.dateAchat,Achat.prixUnitaire, 
 SUM(qteEntree) - SUM(qteSortie) AS reste
 FROM MvtStock 
 JOIN Achat ON MvtStock.idAchat = Achat.id
