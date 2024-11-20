@@ -1,7 +1,8 @@
 CREATE TABLE Machine (
     id serial PRIMARY KEY,
-    nomMachine varchar(50) unique NOT NULL,
+    nomMachine varchar(50) unique NOT NULL
 );
+INSERT INTO Machine (id,nomMachine) VALUES (default, 'M1'), (default, 'M2'), (default, 'M3'), (default, 'M4');
 
 CREATE TABLE bloc (
     id SERIAL PRIMARY KEY,
@@ -21,12 +22,16 @@ CREATE TABLE Unite(
     id serial PRIMARY KEY,
     nom VARCHAR(50) NOT NULL
 );
+INSERT INTO Unite (id,nom) VALUES(default, 'litres'),(default, 'kg');
 
 CREATE TABLE Produit(
     id serial PRIMARY KEY,
     nom VARCHAR(50) NOT NULL,
     idUnite int REFERENCES Unite(id) ON DELETE CASCADE
 );
+
+INSERT INTO Produit VALUES(default, 'ESSENCE', 1), 
+(default, 'DURCISSEUR', 1), (default, 'PAPIER', 2);
 
 CREATE TABLE Achat(
     id serial PRIMARY KEY,
@@ -39,15 +44,17 @@ CREATE TABLE Achat(
 CREATE TABLE MvtStock (
     id serial PRIMARY KEY,
     idAchat int REFERENCES Achat(id) ON DELETE CASCADE,
-    qteEntree double precision NOT NULL,
-    qteSortie double precision NOT NULL,
-    dateSaisie date NOT NULL,
+    qteEntree double precision NOT NULL default 0,
+    qteSortie double precision NOT NULL default 0,
+    dateSaisie date NOT NULL
 );
 
 CREATE TABLE Formule (
     id serial PRIMARY KEY,
     descri varchar(50) NOT NULL
 );
+INSERT INTO Formule VALUES(default, 'Formule');
+INSERT INTO DetailsFormule VALUES(1, 1, 2), (1, 2, 0.5), (1, 3, 3);
 CREATE TABLE DetailsFormule(
     idFormule int REFERENCES Formule(id),
     idProduit int REFERENCES Produit(id),
@@ -60,14 +67,14 @@ Achat.id, Achat.idProduit, Achat.dateAchat,Achat.prixUnitaire,
 SUM(qteEntree) - SUM(qteSortie) AS reste
 FROM MvtStock 
 JOIN Achat ON MvtStock.idAchat = Achat.id
-GROUP BY idAchat
+GROUP BY Achat.id
 WITH DATA;
 
 SELECT * FROM V_EtatStock WHERE reste > 0 ORDER BY dateAchat ASC; 
 
 CREATE TABLE DetailsBloc(
     idBloc int REFERENCES bloc(id) PRIMARY KEY,
-    idMvtStock int REFERENCES MvtStock(id) PRIMARY KEY,
+    idMvtStock int REFERENCES MvtStock(id) PRIMARY KEY
 );
 
 CREATE TABLE usuelle (
@@ -92,6 +99,9 @@ CREATE TABLE detailsTransformation (
     nb INT NOT NULL,
     PrixRevient double precision not null
 );
+
+--- bilan machine
+SELECT idMACHINE, SUM(prixrevientpratique) as prixRevientPratique, SUM(prixrevienttheorique) as prixRevientTheorique, SUM(prixrevientpratique)-sum(prixrevienttheorique) as difference from bloc group by idMachine;
 
 -- Get most rentable
 SELECT * FROM usuelle WHERE

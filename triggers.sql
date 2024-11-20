@@ -96,9 +96,47 @@ BEFORE UPDATE ON bloc
 FOR EACH ROW
 EXECUTE FUNCTION set_source_mere_on_insert();
 
---- donnees usuelles
-INSERT INTO usuelle(nom,longueur,largeur,epaisseur, prixVente) VALUES 
-('U1', 16, 4, 2, 20000), ('U2', 10, 7, 1, 12000), ('U3', 5, 1, 1, 600);
+--- entree mvt Stock 
+CREATE OR REPLACE FUNCTION insert_entree_mvtstock()
+RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO MvtStock (idAchat, qteEntree, qteSortie, dateSaisie)
+    VALUES (NEW.id, NEW.quantite, 0, NEW.dateAchat);
+    refresh materialized view v_etatstock with data;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+DROP TRIGGER IF EXISTS trg_insert_mvt_stock ON Achat;
+CREATE TRIGGER trg_insert_mvt_stock
+AFTER INSERT ON Achat
+FOR EACH ROW
+EXECUTE FUNCTION insert_entree_mvtstock();
+
+--- verification entree bloc 
+CREATE OR REPLACE FUNCTION check_machine_usage()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF EXISTS (
+        SELECT 1
+        FROM bloc
+        WHERE idMachine = NEW.idMachine
+          AND dateProduction = NEW.dateProduction
+    ) THEN
+        RAISE EXCEPTION 'La machine % est deja occupee pour la date %', NEW.idMachine, NEW.dateProduction;
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_verif_machine
+BEFORE INSERT ON bloc
+FOR EACH ROW
+EXECUTE FUNCTION check_machine_usage();
+
+
+
+
 
 
  

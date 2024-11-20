@@ -187,6 +187,28 @@ public class Bloc {
             throw e;
         }
     }
+
+    public void createBlocMere(Connect c)throws Exception{
+        try {      
+            String Query = "INSERT INTO Bloc(id, longueur,  largeur, epaisseur,prixRevientPratique, dateProduction, idMachine,source, prixRevientTheorique) VALUES (default , ?, ?, ?, ?, ?, ?, ?, get_pr_theorique(1, ?, ?))";
+            PreparedStatement preparedStatement = c.getConnex().prepareStatement(Query);
+            preparedStatement.setDouble(1 , this.getLongueur());
+            preparedStatement.setDouble(2 , this.getLargeur());
+            preparedStatement.setDouble(3 , this.getEpaisseur());
+            preparedStatement.setDouble(4 , this.getPrixRevientPratique());
+            preparedStatement.setDate(5 , this.getDateProduction());
+            preparedStatement.setInt(6, this.getIdMachine());
+            preparedStatement.setInt(7, this.getSource());
+            preparedStatement.setDouble(8,this.epaisseur*this.longueur*this.largeur);
+            preparedStatement.setDate(9, this.getDateProduction());
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+            c.getConnex().commit();
+        } catch (Exception e) {
+            c.rollback();
+            throw e;
+        }
+    }
     
    public void getByIdSource(Connect c) throws Exception {
     try {
@@ -244,7 +266,6 @@ public class Bloc {
             return results;
             
         } catch (Exception e) {
-            c.closeBD();
             throw e;
         }
     }
@@ -260,10 +281,10 @@ public class Bloc {
             preparedStatement.close();
             c.getConnex().commit();
         } catch (Exception e) {
-            c.closeBD();
             throw e;
         }
     }
+
     public static List<Bloc> getAllDispo(Connect c) throws Exception { 
         try {
             String sql = "select * from Bloc where id not in (select source from bloc)";
@@ -293,7 +314,6 @@ public class Bloc {
             return results;
             
         } catch (Exception e) {
-            c.closeBD();
             throw e;
         }
     }

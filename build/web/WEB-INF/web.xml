@@ -16,6 +16,14 @@
         <servlet-name>UpdatePrix</servlet-name>
         <servlet-class>Controller.UpdatePrix</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AchatServlet</servlet-name>
+        <servlet-class>Controller.AchatServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BilanMachine</servlet-name>
+        <servlet-class>Controller.BilanMachine</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>InsertBloc</servlet-name>
         <url-pattern>/InsertBloc</url-pattern>
@@ -31,6 +39,14 @@
     <servlet-mapping>
         <servlet-name>UpdatePrix</servlet-name>
         <url-pattern>/UpdatePrix</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AchatServlet</servlet-name>
+        <url-pattern>/AchatServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BilanMachine</servlet-name>
+        <url-pattern>/BilanMachine</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

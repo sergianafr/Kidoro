@@ -5,15 +5,16 @@
  */
 package Controller;
 
+import Models.Achat;
 import Models.Bloc;
-import Models.Machine;
 import Models.Produit;
+import Models.Usuelle;
 import dbUtils.Connect;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,9 +24,9 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author SERGIANA
  */
-public class InsertBloc extends HttpServlet {
+public class AchatServlet extends HttpServlet {
 
-    /** 
+    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
@@ -37,8 +38,18 @@ public class InsertBloc extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        // Récupérer les données du formulaire
-        
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet AchatServlet</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet AchatServlet at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -56,9 +67,9 @@ public class InsertBloc extends HttpServlet {
         Connect c = new Connect();
         try {
             c.connectToPostgres("kidoro", "Etu002610");
-            List<Machine> listProduit = Machine.getAll(c);
-            request.setAttribute("listMachine", listProduit);
-            request.getRequestDispatcher("/bloc.jsp").forward(request, response);
+            List<Produit> listProduit = Produit.getAll(c);
+            request.setAttribute("listProduit", listProduit);
+            request.getRequestDispatcher("/achat.jsp").forward(request, response);
             
         } catch (Exception e) {
             e.printStackTrace();
@@ -80,32 +91,22 @@ public class InsertBloc extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        double longueur = Double.parseDouble(request.getParameter("longueur"));
-        double largeur = Double.parseDouble(request.getParameter("largeur"));
-        double epaisseur = Double.parseDouble(request.getParameter("epaisseur"));
-        double volume = longueur * largeur * epaisseur;
-        double prixRevientPratique = Double.parseDouble(request.getParameter("prixRevient"));
-        Date dateProduction = Date.valueOf(request.getParameter("dateProduction"));
-        int source = request.getParameter("source") != null ? Integer.parseInt(request.getParameter("source")) : 0;
-        int idMachine = request.getParameter("idMachine") != null ? Integer.parseInt(request.getParameter("idMachine")) : 0;
+        Connect c = new Connect();
+        String idProduit = request.getParameter("idProduit");
+        String qteStr = request.getParameter("qte");
+        String puStr = request.getParameter("pu");
+        String dateAchatStr = request.getParameter("dateAchat");
 
-        // Préparation de la connexion et de la requête SQL
-        Connect c = new Connect(); // Initialisez votre objet Connect
-        try{
+        try {
             c.connectToPostgres("kidoro", "Etu002610");
-            Bloc b = new Bloc(0, longueur,largeur, epaisseur, prixRevientPratique, dateProduction, idMachine, source);
-            b.createBlocMere(c);
-            request.setAttribute("success", "Bloc insere avec succes");
+            double qte = Double.parseDouble(qteStr);
+            double pu = Double.parseDouble(puStr);
+            Date dateAchat = Date.valueOf(dateAchatStr);
+            Achat achat = new Achat(Integer.parseInt(idProduit), qte, pu, dateAchat);
+            achat.createAchat(c);
             
-            
-           
-            doGet(request, response);
-            
-        }catch(Exception e){
-            request.setAttribute("exception", e.getMessage());
-            c.rollback();
+        } catch(Exception e){
             e.printStackTrace();
-            doGet(request, response);
         }
         finally{
             c.closeBD();

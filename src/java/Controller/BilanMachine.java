@@ -5,15 +5,14 @@
  */
 package Controller;
 
-import Models.Bloc;
-import Models.Machine;
-import Models.Produit;
+import Models.Bilan;
+import Models.Usuelle;
+import Models.V_BilanMachine;
 import dbUtils.Connect;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
 import java.util.List;
-
+import java.util.Vector;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,9 +22,9 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author SERGIANA
  */
-public class InsertBloc extends HttpServlet {
+public class BilanMachine extends HttpServlet {
 
-    /** 
+    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
@@ -37,8 +36,18 @@ public class InsertBloc extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        // Récupérer les données du formulaire
-        
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet BilanMachine</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet BilanMachine at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -54,18 +63,14 @@ public class InsertBloc extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Connect c = new Connect();
-        try {
+        try{
             c.connectToPostgres("kidoro", "Etu002610");
-            List<Machine> listProduit = Machine.getAll(c);
-            request.setAttribute("listMachine", listProduit);
-            request.getRequestDispatcher("/bloc.jsp").forward(request, response);
+            List<V_BilanMachine> listBilan = V_BilanMachine.getAll(c);
+            request.setAttribute("listBilan", listBilan);
+            request.getRequestDispatcher("/BilanMachine.jsp").forward(request, response);
             
-        } catch (Exception e) {
+        }catch(Exception e){
             e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erreur lors de la récupération des données.");
-        }
-        finally{
-            c.closeBD();
         }
     }
 
@@ -80,36 +85,7 @@ public class InsertBloc extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        double longueur = Double.parseDouble(request.getParameter("longueur"));
-        double largeur = Double.parseDouble(request.getParameter("largeur"));
-        double epaisseur = Double.parseDouble(request.getParameter("epaisseur"));
-        double volume = longueur * largeur * epaisseur;
-        double prixRevientPratique = Double.parseDouble(request.getParameter("prixRevient"));
-        Date dateProduction = Date.valueOf(request.getParameter("dateProduction"));
-        int source = request.getParameter("source") != null ? Integer.parseInt(request.getParameter("source")) : 0;
-        int idMachine = request.getParameter("idMachine") != null ? Integer.parseInt(request.getParameter("idMachine")) : 0;
-
-        // Préparation de la connexion et de la requête SQL
-        Connect c = new Connect(); // Initialisez votre objet Connect
-        try{
-            c.connectToPostgres("kidoro", "Etu002610");
-            Bloc b = new Bloc(0, longueur,largeur, epaisseur, prixRevientPratique, dateProduction, idMachine, source);
-            b.createBlocMere(c);
-            request.setAttribute("success", "Bloc insere avec succes");
-            
-            
-           
-            doGet(request, response);
-            
-        }catch(Exception e){
-            request.setAttribute("exception", e.getMessage());
-            c.rollback();
-            e.printStackTrace();
-            doGet(request, response);
-        }
-        finally{
-            c.closeBD();
-        }
+        processRequest(request, response);
     }
 
     /**

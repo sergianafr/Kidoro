@@ -1,7 +1,7 @@
-CREATE OR REPLACE FUNCTION calcul_prix_revient_theorique(
-    bloc_id INT,       
+CREATE OR REPLACE FUNCTION get_pr_theorique(   
     formule_id INT,       
-    volume_m3 DOUBLE PRECISION  
+    volume_m3 DOUBLE PRECISION,
+    date_production DATE
 ) RETURNS DOUBLE PRECISION AS $$
 DECLARE
     total_prix_revient DOUBLE PRECISION := 0; 
@@ -20,7 +20,7 @@ BEGIN
         FOR stock IN
             SELECT * 
             FROM V_EtatStock 
-            WHERE idProduit = produit.idProduit AND reste > 0
+            WHERE idProduit = produit.idProduit AND reste > 0 AND dateAchat <= date_production
             ORDER BY dateAchat ASC
         LOOP
             IF reste_a_consumer <= 0 THEN
@@ -50,10 +50,7 @@ BEGIN
             RAISE EXCEPTION 'Stock insuffisant pour le produit %', produit.idProduit;
         END IF;
     END LOOP;
-
-    UPDATE bloc
-    SET prixRevientTheorique = total_prix_revient
-    WHERE id = bloc_id;
+    refresh materialized view v_etatstock with data;
 
     RETURN total_prix_revient;
 END;
