@@ -9,10 +9,13 @@ import Models.Achat;
 import Models.Bloc;
 import Models.Produit;
 import Models.Usuelle;
+import Util.ConversionUtil;
 import dbUtils.Connect;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -101,10 +104,10 @@ public class AchatServlet extends HttpServlet {
             c.connectToPostgres("kidoro", "Etu002610");
             double qte = Double.parseDouble(qteStr);
             double pu = Double.parseDouble(puStr);
-            Date dateAchat = Date.valueOf(dateAchatStr);
+            Timestamp dateAchat = ConversionUtil.convertToTimestamp(dateAchatStr);
             Achat achat = new Achat(Integer.parseInt(idProduit), qte, pu, dateAchat);
             achat.createAchat(c);
-            
+            doGet(request, response);
         } catch(Exception e){
             e.printStackTrace();
         }

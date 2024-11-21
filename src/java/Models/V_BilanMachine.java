@@ -65,8 +65,35 @@ public class V_BilanMachine {
 
     public static List<V_BilanMachine> getAll(Connect c) throws Exception { 
         try {
-            String sql = "SELECT idMACHINE, SUM(prixrevientpratique) as prixRevientPratique, SUM(prixrevienttheorique) as prixRevientTheorique, SUM(prixrevientpratique)-sum(prixrevienttheorique) as difference from bloc group by idMachine";
+            String sql = "SELECT idMACHINE, SUM(prixrevientpratique) as prixRevientPratique, SUM(prixrevienttheorique) as prixRevientTheorique, SUM(prixrevientpratique)-sum(prixrevienttheorique) as difference from bloc group by idMachine order by difference asc";
             PreparedStatement preparedStatement = c.getConnex().prepareStatement(sql);
+            ResultSet rs = preparedStatement.executeQuery();
+            
+            List<V_BilanMachine> results = new ArrayList<V_BilanMachine>();
+            while(rs.next()){
+                int id = rs.getInt(1);
+               double prPratique = rs.getDouble(2);
+               double prTheorique = rs.getDouble(3);
+               double difference = rs.getDouble(4);
+                
+                V_BilanMachine vbm = new V_BilanMachine(id, prPratique, prTheorique, difference);
+                results.add(vbm);
+            }
+            preparedStatement.close();
+            rs.close();
+            return results;
+            
+        } catch (Exception e) {
+            c.closeBD();
+            throw e;
+        }
+    }
+
+    public static List<V_BilanMachine> getAllByYear(int annee, Connect c) throws Exception { 
+        try {
+            String sql = "SELECT idMACHINE, SUM(prixrevientpratique) as prixRevientPratique, SUM(prixrevienttheorique) as prixRevientTheorique, SUM(prixrevientpratique)-sum(prixrevienttheorique) as difference from bloc where EXTRACT(year from dateProduction)= ? group by idMachine order by difference asc";
+            PreparedStatement preparedStatement = c.getConnex().prepareStatement(sql);
+            preparedStatement.setInt(1, annee);
             ResultSet rs = preparedStatement.executeQuery();
             
             List<V_BilanMachine> results = new ArrayList<V_BilanMachine>();

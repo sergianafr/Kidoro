@@ -28,7 +28,7 @@
         <label for="pu">Prix unitaire</label>
         <input type="number" name="pu" id="pu" step="0.00001">
         <label for="dateAchat">Date achat</label>
-        <input type="date" name="dateAchat" id="dateAchat">
+        <input type="datetime-local" name="dateAchat" id="dateAchat">
         <input type="submit" value="valider">
     </form>
 </body>

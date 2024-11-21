@@ -17,7 +17,8 @@ BEFORE INSERT ON usuelle
 FOR EACH ROW
 EXECUTE FUNCTION calculate_volume();
 
-
+ALTER TABLE usuelle DISABLE TRIGGER before_insert_calculate_volume_usuelle;
+ALTER TABLE bloc DISABLE TRIGGER before_insert_calculate_volume;
 
 --- update prix revient
 CREATE OR REPLACE FUNCTION update_prix_revient_trigger()
@@ -51,7 +52,7 @@ FOR EACH ROW
 WHEN (OLD.prixRevient IS DISTINCT FROM NEW.prixRevient)
 EXECUTE FUNCTION update_prix_revient_trigger();
 
-
+ALTER TABLE bloc DISABLE TRIGGER trg_update_prix_revient;
 
 --- set source mere
 
@@ -89,12 +90,16 @@ CREATE TRIGGER trg_set_source_mere_on_insert
 BEFORE INSERT ON bloc
 FOR EACH ROW
 EXECUTE FUNCTION set_source_mere_on_insert();
+ALTER TABLE bloc DISABLE TRIGGER trg_set_source_mere_on_insert;
 
 DROP TRIGGER IF EXISTS trg_set_source_mere_on_update ON bloc;
 CREATE TRIGGER trg_set_source_mere_on_update
 BEFORE UPDATE ON bloc
 FOR EACH ROW
 EXECUTE FUNCTION set_source_mere_on_insert();
+
+ALTER TABLE bloc DISABLE TRIGGER trg_set_source_mere_on_update;
+
 
 --- entree mvt Stock 
 CREATE OR REPLACE FUNCTION insert_entree_mvtstock()
@@ -122,7 +127,7 @@ BEGIN
         WHERE idMachine = NEW.idMachine
           AND dateProduction = NEW.dateProduction
     ) THEN
-        RAISE EXCEPTION 'La machine % est deja occupee pour la date %', NEW.idMachine, NEW.dateProduction;
+        RAISE EXCEPTION 'La machine % est deja occupee pour la date et heure %', NEW.idMachine, NEW.dateProduction;
     END IF;
 
     RETURN NEW;

@@ -6,6 +6,8 @@
 package Models;
 
 import dbUtils.Connect;
+
+import java.sql.Timestamp;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -85,7 +87,8 @@ public class Transformation {
     
     public void setReste(double longueur, double largeur, double epaisseur){
         this.reste = new Bloc(longueur, largeur, epaisseur);
-        reste.setDateProduction(this.getDateTransformation());
+        /// CHANGEEEEE
+        // reste.setDateProduction(this.getDateTransformation());
         reste.setPrixRevientPratique(bloc.getPRUnite()*reste.getVolume());
         // reste.setPrixAchat(bloc.getPAUnite()*reste.calculateVolume());
         reste.setSource(this.getBloc().getId());
@@ -222,7 +225,7 @@ public class Transformation {
                 double volume = rs.getDouble(5);
                 double prixRevientTheorique = rs.getDouble(6);
                 double prixRevientPratique = rs.getDouble(7);
-                Date dateProduction = rs.getDate(8);
+                Timestamp dateProduction = rs.getTimestamp(8);
                 int idMachine = rs.getInt(9);
                 int sourceMere =  rs.getInt(11);
                 int source = rs.getInt(10);

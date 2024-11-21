@@ -6,6 +6,8 @@
 package Models;
 
 import dbUtils.Connect;
+
+import java.sql.Timestamp;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,7 +22,7 @@ public class Bloc {
     private int id;
     private double longueur, largeur, epaisseur, volume;
     private double prixRevientPratique, prixRevientTheorique;
-    private Date dateProduction;
+    private Timestamp dateProduction;
     private int idMachine;
     private int source;
     private int sourceMere;
@@ -34,7 +36,7 @@ public class Bloc {
     }
     
     
-    public Bloc(int id, double longueur, double largeur, double epaisseur, double prixRevient, Date dateProduction, int idMachine, int source) {
+    public Bloc(int id, double longueur, double largeur, double epaisseur, double prixRevient, Timestamp dateProduction, int idMachine, int source) {
         this.id = id;
         this.longueur = longueur;
         this.largeur = largeur;
@@ -45,7 +47,7 @@ public class Bloc {
         this.idMachine = idMachine;
         this.source = source;
     }
-    public Bloc(int id, double longueur, double largeur, double epaisseur, double prixRevient, double prixAchat, Date dateProduction, int idMachine ,int source) {
+    public Bloc(int id, double longueur, double largeur, double epaisseur, double prixRevient, double prixAchat, Timestamp dateProduction, int idMachine ,int source) {
         this.id = id;
         this.longueur = longueur;
         this.largeur = largeur;
@@ -58,7 +60,7 @@ public class Bloc {
         this.idMachine = idMachine;
     }
     
-    public Bloc(int id, double longueur, double largeur, double epaisseur, double volume, double prixRevient, double prixAchat, Date dateProduction, int idMachine,int source) {
+    public Bloc(int id, double longueur, double largeur, double epaisseur, double volume, double prixRevient, double prixAchat, Timestamp dateProduction, int idMachine,int source) {
         this.id = id;
         this.longueur = longueur;
         this.largeur = largeur;
@@ -137,11 +139,11 @@ public class Bloc {
         this.epaisseur = epaisseur;
     }
 
-    public Date getDateProduction() {
+    public Timestamp getDateProduction() {
         return dateProduction;
     }
 
-    public void setDateProduction(Date dateProduction) {
+    public void setDateProduction(Timestamp dateProduction) {
         this.dateProduction = dateProduction;
     }
 
@@ -176,7 +178,7 @@ public class Bloc {
             preparedStatement.setDouble(2 , this.getLargeur());
             preparedStatement.setDouble(3 , this.getEpaisseur());
             preparedStatement.setDouble(4 , this.getPrixRevientPratique());
-            preparedStatement.setDate(5 , this.getDateProduction());
+            preparedStatement.setTimestamp(5 , this.getDateProduction());
             preparedStatement.setInt(6, this.getIdMachine());
             preparedStatement.setInt(7, this.getSource());
             preparedStatement.executeUpdate();
@@ -190,17 +192,18 @@ public class Bloc {
 
     public void createBlocMere(Connect c)throws Exception{
         try {      
-            String Query = "INSERT INTO Bloc(id, longueur,  largeur, epaisseur,prixRevientPratique, dateProduction, idMachine,source, prixRevientTheorique) VALUES (default , ?, ?, ?, ?, ?, ?, ?, get_pr_theorique(1, ?, ?))";
+            String Query = "INSERT INTO Bloc(id, longueur,  largeur, epaisseur,prixRevientPratique, dateProduction, idMachine,source, prixRevientTheorique, volume) VALUES (default , ?, ?, ?, ?, ?, ?, ?, get_pr_theorique(1, ?, ?), ?)";
             PreparedStatement preparedStatement = c.getConnex().prepareStatement(Query);
             preparedStatement.setDouble(1 , this.getLongueur());
             preparedStatement.setDouble(2 , this.getLargeur());
             preparedStatement.setDouble(3 , this.getEpaisseur());
             preparedStatement.setDouble(4 , this.getPrixRevientPratique());
-            preparedStatement.setDate(5 , this.getDateProduction());
+            preparedStatement.setTimestamp(5 , this.getDateProduction());
             preparedStatement.setInt(6, this.getIdMachine());
             preparedStatement.setInt(7, this.getSource());
             preparedStatement.setDouble(8,this.epaisseur*this.longueur*this.largeur);
-            preparedStatement.setDate(9, this.getDateProduction());
+            preparedStatement.setTimestamp(9, this.getDateProduction());
+            preparedStatement.setDouble(10,this.epaisseur*this.longueur*this.largeur);
             preparedStatement.executeUpdate();
             preparedStatement.close();
             c.getConnex().commit();
@@ -225,7 +228,7 @@ public class Bloc {
             this.volume = rs.getDouble("volume");
             this.prixRevientTheorique= rs.getDouble("prixRevientTheorique");
             this.prixRevientPratique = rs.getDouble("prixRevientPratique");
-            this.dateProduction = rs.getDate("dateProduction");
+            this.dateProduction = rs.getTimestamp("dateProduction");
             this.source = rs.getInt("source");
             this.sourceMere = rs.getInt("sourceMere");
         }
@@ -252,7 +255,7 @@ public class Bloc {
                 double volume = rs.getDouble(5);
                 double prixRevientTheorique = rs.getDouble(6);
                 double prixRevientPratique = rs.getDouble(7);
-                Date dateProduction = rs.getDate(8);
+                Timestamp dateProduction = rs.getTimestamp(8);
                 int idMachine = rs.getInt(9);
                 int sourceMere = rs.getInt(11);
                 int source = rs.getInt(10);
@@ -300,7 +303,7 @@ public class Bloc {
                 double volume = rs.getDouble(5);
                 double prixRevientTheorique= rs.getDouble(6);
                 double prixRevientPratique= rs.getDouble(7);
-                Date dateProduction = rs.getDate(8);
+                Timestamp dateProduction = rs.getTimestamp(8);
                 int idMachine = rs.getInt(9);
                 int source = rs.getInt(10);
                 int sourceMere = rs.getInt(11);

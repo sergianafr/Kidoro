@@ -2,6 +2,7 @@ package Models;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.Timestamp;
 
 import dbUtils.Connect;
 
@@ -10,16 +11,16 @@ public class Achat {
     private int idProduit;
     private double quantite;
     private double prixUnitaire;
-    private Date dateAchat;
+    private Timestamp dateAchat;
 
-    public Achat(int idProduit, double quantite, double prixUnitaire, Date dateAchat) {
+    public Achat(int idProduit, double quantite, double prixUnitaire, Timestamp dateAchat) {
         this.idProduit = idProduit;
         this.quantite = quantite;
         this.prixUnitaire = prixUnitaire;
         this.dateAchat = dateAchat;
     }
 
-    public Date getDateAchat() {
+    public Timestamp getDateAchat() {
         return dateAchat;
     }public int getId() {
         return id;
@@ -30,7 +31,7 @@ public class Achat {
     }public double getQuantite() {
         return quantite;
     }
-    public void setDateAchat(Date dateAchat) {
+    public void setDateAchat(Timestamp dateAchat) {
         this.dateAchat = dateAchat;
     }public void setId(int id) {
         this.id = id;
@@ -50,7 +51,7 @@ public class Achat {
             preparedStatement.setInt(1, this.getIdProduit());
             preparedStatement.setDouble(2, this.getQuantite());
             preparedStatement.setDouble(3 , this.getPrixUnitaire());
-            preparedStatement.setDate(4 , this.getDateAchat());
+            preparedStatement.setTimestamp(4 , this.getDateAchat());
             preparedStatement.executeUpdate();
             preparedStatement.close();
             c.getConnex().commit();

@@ -121,7 +121,7 @@
         <input type="number" step="0.0001" id="prixRevient" name="prixRevient" required>
 
         <label for="dateProduction">Date de production :</label>
-        <input type="date" id="dateProduction" name="dateProduction" required>
+        <input type="datetime-local" id="dateProduction" name="dateProduction" required>
         
         <button type="submit">Valider</button>
     </form>

@@ -12,7 +12,7 @@ CREATE TABLE bloc (
     volume double precision NOT NULL,
     prixRevientTheorique double precision NOT NULL,
     prixRevientPratique double precision NOT NULL,
-    dateProduction DATE NOT NULL,
+    dateProduction TIMESTAMP NOT NULL,
     idMachine int REFERENCES Machine(id) ON DELETE CASCADE,
     source int default null,
     sourceMere int
@@ -38,7 +38,7 @@ CREATE TABLE Achat(
     idProduit int REFERENCES Produit(id) ON DELETE CASCADE,
     quantite double precision NOT NULL,
     prixUnitaire double precision NOT NULL,
-    dateAchat date NOT NULL
+    dateAchat TIMESTAMP NOT NULL
 );
 
 CREATE TABLE MvtStock (
@@ -46,20 +46,21 @@ CREATE TABLE MvtStock (
     idAchat int REFERENCES Achat(id) ON DELETE CASCADE,
     qteEntree double precision NOT NULL default 0,
     qteSortie double precision NOT NULL default 0,
-    dateSaisie date NOT NULL
+    dateSaisie TIMESTAMP NOT NULL
 );
 
 CREATE TABLE Formule (
     id serial PRIMARY KEY,
     descri varchar(50) NOT NULL
 );
-INSERT INTO Formule VALUES(default, 'Formule');
-INSERT INTO DetailsFormule VALUES(1, 1, 2), (1, 2, 0.5), (1, 3, 3);
+
 CREATE TABLE DetailsFormule(
     idFormule int REFERENCES Formule(id),
     idProduit int REFERENCES Produit(id),
     qte double precision NOT NULL
 );
+INSERT INTO Formule VALUES(default, 'Formule');
+INSERT INTO DetailsFormule VALUES(1, 1, 2), (1, 2, 0.5), (1, 3, 3);
 
 CREATE MATERIALIZED VIEW V_EtatStock AS 
 SELECT 
@@ -101,7 +102,7 @@ CREATE TABLE detailsTransformation (
 );
 
 --- bilan machine
-SELECT idMACHINE, SUM(prixrevientpratique) as prixRevientPratique, SUM(prixrevienttheorique) as prixRevientTheorique, SUM(prixrevientpratique)-sum(prixrevienttheorique) as difference from bloc group by idMachine;
+SELECT idMACHINE, SUM(prixrevientpratique) as prixRevientPratique, SUM(prixrevienttheorique) as prixRevientTheorique, SUM(prixrevientpratique)-sum(prixrevienttheorique) as difference from bloc group by idMachine order by difference asc;
 
 -- Get most rentable
 SELECT * FROM usuelle WHERE

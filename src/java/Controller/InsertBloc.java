@@ -8,10 +8,12 @@ package Controller;
 import Models.Bloc;
 import Models.Machine;
 import Models.Produit;
+import Util.ConversionUtil;
 import dbUtils.Connect;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -85,31 +87,33 @@ public class InsertBloc extends HttpServlet {
         double epaisseur = Double.parseDouble(request.getParameter("epaisseur"));
         double volume = longueur * largeur * epaisseur;
         double prixRevientPratique = Double.parseDouble(request.getParameter("prixRevient"));
-        Date dateProduction = Date.valueOf(request.getParameter("dateProduction"));
+        Timestamp dateProduction = ConversionUtil.convertToTimestamp(request.getParameter("dateProduction"));
         int source = request.getParameter("source") != null ? Integer.parseInt(request.getParameter("source")) : 0;
         int idMachine = request.getParameter("idMachine") != null ? Integer.parseInt(request.getParameter("idMachine")) : 0;
 
+        PrintWriter out = response.getWriter();
+        out.println(dateProduction);
         // Préparation de la connexion et de la requête SQL
-        Connect c = new Connect(); // Initialisez votre objet Connect
-        try{
-            c.connectToPostgres("kidoro", "Etu002610");
-            Bloc b = new Bloc(0, longueur,largeur, epaisseur, prixRevientPratique, dateProduction, idMachine, source);
-            b.createBlocMere(c);
-            request.setAttribute("success", "Bloc insere avec succes");
+        // Connect c = new Connect(); // Initialisez votre objet Connect
+        // try{
+        //     c.connectToPostgres("kidoro", "Etu002610");
+        //     Bloc b = new Bloc(0, longueur,largeur, epaisseur, prixRevientPratique, dateProduction, idMachine, source);
+        //     b.createBlocMere(c);
+        //     request.setAttribute("success", "Bloc insere avec succes");
             
             
            
-            doGet(request, response);
+        //     doGet(request, response);
             
-        }catch(Exception e){
-            request.setAttribute("exception", e.getMessage());
-            c.rollback();
-            e.printStackTrace();
-            doGet(request, response);
-        }
-        finally{
-            c.closeBD();
-        }
+        // }catch(Exception e){
+        //     request.setAttribute("exception", e.getMessage());
+        //     c.rollback();
+        //     e.printStackTrace();
+        //     doGet(request, response);
+        // }
+        // finally{
+        //     c.closeBD();
+        // }
     }
 
     /**

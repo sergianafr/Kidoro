@@ -1,7 +1,7 @@
 CREATE OR REPLACE FUNCTION get_pr_theorique(   
     formule_id INT,       
     volume_m3 DOUBLE PRECISION,
-    date_production DATE
+    date_production TIMESTAMP
 ) RETURNS DOUBLE PRECISION AS $$
 DECLARE
     total_prix_revient DOUBLE PRECISION := 0; 
@@ -32,7 +32,7 @@ BEGIN
                 total_prix_revient := total_prix_revient + (reste_a_consumer * prix_unitaire);
 
                 INSERT INTO MvtStock (idAchat, qteEntree, qteSortie, dateSaisie)
-                VALUES (stock.id, 0, reste_a_consumer, CURRENT_DATE);
+                VALUES (stock.id, 0, reste_a_consumer, date_production);
 
                 reste_a_consumer := 0; 
             ELSE
@@ -40,7 +40,7 @@ BEGIN
                 total_prix_revient := total_prix_revient + (stock.reste * prix_unitaire);
 
                 INSERT INTO MvtStock (idAchat, qteEntree, qteSortie, dateSaisie)
-                VALUES (stock.id, 0, stock.reste, CURRENT_DATE);
+                VALUES (stock.id, 0, stock.reste, date_production);
 
                 reste_a_consumer := reste_a_consumer - stock.reste; 
             END IF;
