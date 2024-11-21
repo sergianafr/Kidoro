@@ -22,7 +22,7 @@ CREATE TABLE Unite(
     id serial PRIMARY KEY,
     nom VARCHAR(50) NOT NULL
 );
-INSERT INTO Unite (id,nom) VALUES(default, 'litres'),(default, 'kg');
+INSERT INTO Unite (id,nom) VALUES(default, 'litres'),(default, 'kg'), (default, 'boites');
 
 CREATE TABLE Produit(
     id serial PRIMARY KEY,
@@ -31,7 +31,7 @@ CREATE TABLE Produit(
 );
 
 INSERT INTO Produit VALUES(default, 'ESSENCE', 1), 
-(default, 'DURCISSEUR', 1), (default, 'PAPIER', 2);
+(default, 'DURCISSEUR', 3), (default, 'PAPIER', 2);
 
 CREATE TABLE Achat(
     id serial PRIMARY KEY,
@@ -60,7 +60,7 @@ CREATE TABLE DetailsFormule(
     qte double precision NOT NULL
 );
 INSERT INTO Formule VALUES(default, 'Formule');
-INSERT INTO DetailsFormule VALUES(1, 1, 2), (1, 2, 0.5), (1, 3, 3);
+INSERT INTO DetailsFormule VALUES(1, 1, 1), (1, 2, 0.5), (1, 3, 1);
 
 CREATE MATERIALIZED VIEW V_EtatStock AS 
 SELECT 
@@ -100,6 +100,9 @@ CREATE TABLE detailsTransformation (
     nb INT NOT NULL,
     PrixRevient double precision not null
 );
+
+
+SELECT idMACHINE, SUM(Volume) as volume,SUM(prixrevientpratique) as prixRevientPratique, SUM(prixrevienttheorique) as prixRevientTheorique, SUM(prixrevientpratique)-sum(prixrevienttheorique) as difference from bloc where EXTRACT(year from dateProduction)= 2024 group by idMachine order by difference asc limit 1;
 
 --- bilan machine
 SELECT idMACHINE, SUM(prixrevientpratique) as prixRevientPratique, SUM(prixrevienttheorique) as prixRevientTheorique, SUM(prixrevientpratique)-sum(prixrevienttheorique) as difference from bloc group by idMachine order by difference asc;

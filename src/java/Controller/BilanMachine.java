@@ -64,8 +64,14 @@ public class BilanMachine extends HttpServlet {
             throws ServletException, IOException {
         Connect c = new Connect();
         try{
+            int annee = request.getParameter("annee") != null ? Integer.parseInt(request.getParameter("annee")) : 0;
             c.connectToPostgres("kidoro", "Etu002610");
-            List<V_BilanMachine> listBilan = V_BilanMachine.getAll(c);
+            List<V_BilanMachine> listBilan = null;
+            if(annee != 0){
+                listBilan = V_BilanMachine.getAllByYear(annee,c);
+            } else {
+                listBilan = V_BilanMachine.getAll(c);
+            }
             request.setAttribute("listBilan", listBilan);
             request.getRequestDispatcher("/BilanMachine.jsp").forward(request, response);
             

@@ -28,8 +28,8 @@ DECLARE
     new_prixRevient DOUBLE PRECISION;
     proportion DOUBLE PRECISION;
 BEGIN
-    old_prixRevient := OLD.prixRevient;
-    new_prixRevient := NEW.prixRevient;
+    old_prixRevient := OLD.prixRevientPratique;
+    new_prixRevient := NEW.prixRevientPratique;
     proportion := new_prixRevient / old_prixRevient;
 
     UPDATE bloc

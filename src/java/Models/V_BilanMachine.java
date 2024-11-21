@@ -19,6 +19,7 @@ import dbUtils.Connect;
  */
 public class V_BilanMachine {
     private int idMachine;
+    private double volume;
     private double prixRevientPratique;
     private double prixRevientTheorique;
     private double difference;
@@ -54,6 +55,12 @@ public class V_BilanMachine {
     public void setDifference(double difference) {
         this.difference = difference;
     }
+    public double getVolume() {
+        return volume;
+    }
+    public void setVolume(double volume) {
+        this.volume = volume;
+    }
     
     
     public V_BilanMachine(int idMachine, double prixRevientPratique, double prixRevientTheorique, double difference) {
@@ -65,18 +72,20 @@ public class V_BilanMachine {
 
     public static List<V_BilanMachine> getAll(Connect c) throws Exception { 
         try {
-            String sql = "SELECT idMACHINE, SUM(prixrevientpratique) as prixRevientPratique, SUM(prixrevienttheorique) as prixRevientTheorique, SUM(prixrevientpratique)-sum(prixrevienttheorique) as difference from bloc group by idMachine order by difference asc";
+            String sql = "SELECT idMACHINE, SUM(volume) as volume, SUM(prixrevientpratique) as prixRevientPratique, SUM(prixrevienttheorique) as prixRevientTheorique, SUM(prixrevientpratique)-sum(prixrevienttheorique) as difference from bloc group by idMachine order by difference asc limit 1";
             PreparedStatement preparedStatement = c.getConnex().prepareStatement(sql);
             ResultSet rs = preparedStatement.executeQuery();
             
             List<V_BilanMachine> results = new ArrayList<V_BilanMachine>();
             while(rs.next()){
                 int id = rs.getInt(1);
-               double prPratique = rs.getDouble(2);
-               double prTheorique = rs.getDouble(3);
-               double difference = rs.getDouble(4);
+                double volume = rs.getDouble(2);
+               double prPratique = rs.getDouble(3);
+               double prTheorique = rs.getDouble(4);
+               double difference = rs.getDouble(5);
                 
                 V_BilanMachine vbm = new V_BilanMachine(id, prPratique, prTheorique, difference);
+                vbm.setVolume(volume);
                 results.add(vbm);
             }
             preparedStatement.close();
@@ -91,7 +100,7 @@ public class V_BilanMachine {
 
     public static List<V_BilanMachine> getAllByYear(int annee, Connect c) throws Exception { 
         try {
-            String sql = "SELECT idMACHINE, SUM(prixrevientpratique) as prixRevientPratique, SUM(prixrevienttheorique) as prixRevientTheorique, SUM(prixrevientpratique)-sum(prixrevienttheorique) as difference from bloc where EXTRACT(year from dateProduction)= ? group by idMachine order by difference asc";
+            String sql = "SELECT idMACHINE, SUM(volume) as volume, SUM(prixrevientpratique) as prixRevientPratique, SUM(prixrevienttheorique) as prixRevientTheorique, SUM(prixrevientpratique)-sum(prixrevienttheorique) as difference from bloc where EXTRACT(year from dateProduction)= ? group by idMachine order by difference asc limit 1";
             PreparedStatement preparedStatement = c.getConnex().prepareStatement(sql);
             preparedStatement.setInt(1, annee);
             ResultSet rs = preparedStatement.executeQuery();
@@ -99,11 +108,13 @@ public class V_BilanMachine {
             List<V_BilanMachine> results = new ArrayList<V_BilanMachine>();
             while(rs.next()){
                 int id = rs.getInt(1);
-               double prPratique = rs.getDouble(2);
-               double prTheorique = rs.getDouble(3);
-               double difference = rs.getDouble(4);
+                double volume = rs.getDouble(2);
+               double prPratique = rs.getDouble(3);
+               double prTheorique = rs.getDouble(4);
+               double difference = rs.getDouble(5);
                 
                 V_BilanMachine vbm = new V_BilanMachine(id, prPratique, prTheorique, difference);
+                vbm.setVolume(volume);
                 results.add(vbm);
             }
             preparedStatement.close();

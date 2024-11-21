@@ -12,11 +12,21 @@
 <body>
 
 <h1>Bilan Machine</h1>
+<form action="BilanMachine" method="get">
+    <select name="annee" id="annee">
+        <option value="0">Tous</option>
+        <option value="2022">2022</option>
+        <option value="2023">2023</option>
+        <option value="2024">2024</option>
+    </select>
+    <input type="submit" value="filtrer">
+</form>
 
 <table border="1">
     <thead>
         <tr>
             <th>ID Machine</th>
+            <th>volume</th>
             <th>Prix Revient Pratique</th>
             <th>Prix Revient Theorique</th>
             <th>Difference</th>
@@ -33,6 +43,7 @@
         %>
             <tr>
                 <td><%= bilan.getIdMachine() %></td>
+                <td><%= bilan.getVolume() %></td>
                 <td><%= bilan.getPrixRevientPratique() %></td>
                 <td><%= bilan.getPrixRevientTheorique() %></td>
                 <td><%= bilan.getDifference() %></td>
